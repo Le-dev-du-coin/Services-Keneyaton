@@ -1,0 +1,144 @@
+{% extends 'partials/base_2.html' %}
+{% load static %}
+
+{% block title %}
+  Payement
+{% endblock  %}
+
+{% block header %}
+   <!-- Page Header Start -->
+   <div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Payement</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'panier' %}">Panier</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Payement</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+{% endblock  %}
+
+{% block content %}
+     <!-- Checkout Start -->
+     <div class="container-fluid pt-5">
+       <form id="shippingForm" method="post" action="">
+        {% csrf_token %}
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <div class="mb-4">
+                    <h4 class="font-weight-semi-bold mb-4">Adresse de Livraison</h4>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Prenom</label>
+                            <input name="first_name" class="form-control" type="text" placeholder="Votre prenom" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Nom</label>
+                            <input name="last_name" class="form-control" type="text" placeholder="Votre nom" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" placeholder="exemple@email.com" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Mobile No</label>
+                            <input name="phone_number" class="form-control" type="text" placeholder="+223 73 45 16 76 (sans espace)" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Pays</label>
+                            <select name="country" class="custom-select" required>
+                                <option selected>Mali</option>
+                                <option>Senegal</option>
+                                <option>Cote d'Ivoire</option>
+                                <option>Burkina Faso</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Ville</label>
+                            <input name="city" class="form-control" type="text" placeholder="Bamako" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Rue</label>
+                            <input name="street" class="form-control" type="text" placeholder="Rue" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Porte</label>
+                            <input name="door" class="form-control" type="text" placeholder="Porte" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Nom de la Compagnie</label>
+                            <input name="compagnie" class="form-control" type="text" placeholder="Services Keneya Ton" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Total Panier</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="font-weight-medium mb-3">Produit</h5>
+                        {% for item in items %}
+                        <div class="d-flex justify-content-between">
+                            <p>{{item.product.name}}</p>
+                            <p>x{{item.quantity}}</p>
+                            <p>{{item.product.new_price}}</p>
+                           <p>{{item.get_total_en_cfa}}</p>
+                            
+                        </div>
+                        {% endfor %}
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Sous total</h6>
+                            <h6 class="font-weight-medium">{{order.get_cart_total_en_cfa}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Livraison</h6>
+                            <h6 class="font-weight-medium">1000</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total General</h5>
+                            <h5 class="font-weight-bold">{{order.get_cart_total_en_cfa}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Payement</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input value="Espece" type="radio" class="custom-control-input" name="payment" id="Espece" required>
+                                <label class="custom-control-label" for="Espece">Espece</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input value="Mobile Money" type="radio" class="custom-control-input" name="payment" id="mobileMoney">
+                                <label class="custom-control-label" for="mobileMoney">Mobile Money (Orange, Moov)</label>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="custom-control custom-radio">
+                                <input value="Banque" type="radio" class="custom-control-input" name="payment" id="banque">
+                                <label class="custom-control-label" for="banque">Banque</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Commander</button>
+                    </div>
+                </div>   
+            </div>
+        </div>
+       </form>
+    </div>
+    <!-- Checkout End -->
+    <script src="{% static 'js/checkout.js' %}"></script>
+{% endblock  %}

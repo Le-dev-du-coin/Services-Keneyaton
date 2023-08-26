@@ -1,0 +1,87 @@
+{% extends 'partials/base_2.html' %}
+
+{% block title %}
+  Inscription - Services Keneya Ton
+{% endblock  %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Inscription</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'index' %}">Accueil</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Inscription</p>
+        </div>
+    </div>
+  </div>
+  <!-- Page Header End -->
+  <div class="container-fluid">
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-6 col-md-8">
+          <div class="card">
+              <div class="card-header">
+                  <h4 class="mb-0">Inscription</h4>
+              </div>
+              <div class="card-body">
+                  <form method="post">
+                      {% csrf_token %}
+                      {% if form.errors %}
+                          <div class="alert alert-danger" role="alert">
+                              {{ form.non_field_errors }}
+                              {{ form.nom.errors }}
+                              {{ form.prenom.errors }}
+                              {{ form.username.errors }}
+                              {{ form.email.errors }}
+                              {{ form.telephone.errors }}
+                              {{ form.password1.errors }}
+                              {{ form.password2.errors }}
+                          </div>
+                      {% endif %}
+                      {% include 'partials/alert.html' %}
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="nom" class="form-label">Nom</label>
+                              {{form.first_name}}
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="prenom" class="form-label">Prénom</label>
+                              {{form.last_name}}
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label for="username" class="form-label">Nom d'utilisateur</label>
+                          {{form.username}}
+                      </div>
+                      <div class="mb-3">
+                          <label for="email" class="form-label">Adresse e-mail</label>
+                         {{form.email}}
+                      </div>
+                      <div class="mb-3">
+                          <label for="telephone" class="form-label">Numéro de téléphone</label>
+                          {{form.phone_number}}
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="password1" class="form-label">Mot de passe</label>
+                              {{form.password1}}
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="password2" class="form-label">Confirmation mot de passe</label>
+                             {{form.password2}}
+                          </div>
+                      </div>
+                      <div class="d-grid gap-2 mb-3">
+                          <button type="submit" class="btn btn-primary">S'inscrire</button>
+                      </div>
+                      <div class="text-center">
+                        <p>Déjà inscrit ? <a href="{% url 'login' %}">Se connecter</a></p>
+                    </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+{% endblock  %}
