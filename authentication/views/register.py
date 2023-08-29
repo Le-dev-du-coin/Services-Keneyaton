@@ -25,7 +25,9 @@ def register(request):
                 user.phone = phone
                 user.is_customer = True
                 user.save()
-                message = messages.success(request, "Votre compte a ete creer avec success")
+                message = messages.success(
+                    request, "Votre compte a ete creer avec success"
+                )
                 return redirect("login")
             else:
                 form = RegisterForm()

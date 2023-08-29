@@ -33,11 +33,11 @@
                         {% include 'partials/alert.html' %}
                     <div class="mb-3">
                         <label for="email" class="form-label">Adresse e-mail</label>
-                        {{form.email}}
+                        <input name="username" class="form-control" type="text" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Mot de passe</label>
-                        {{form.password}}
+                        <input name="password" class="form-control" type="text" required>
                     </div>
                     <div class="d-grid gap-2 mb-3">
                         <button type="submit" class="btn btn-primary">Se connecter</button>

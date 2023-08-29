@@ -1,0 +1,21 @@
+{% autoescape off %}
+<h1>Vous avez reçu une nouvelle commande !</h1>
+<p>Un nouvel utilisateur a passé une commande sur votre site. Voici les détails :</p>
+
+<h2>Informations sur la commande :</h2>
+<ul>
+    <li><strong>Numéro de commande :</strong> {{ order.transaction_id }}</li>
+    <li><strong>Date de la commande :</strong> {{ order.dat_ordered }}</li>
+    <li><strong>Client :</strong> {{ customer.username }}</li>
+    <!-- Ajoutez ici d'autres informations sur la commande que vous souhaitez inclure -->
+</ul>
+
+<h2>Produits commandés :</h2>
+<ul>
+    {% for item in order.items %}
+        <li>{{ item.product.name }} (Quantité : {{ item.quantity }})</li>
+    {% endfor %}
+</ul>
+
+<p>Connectez-vous à l'interface d'administration pour gérer cette commande.</p>
+{% endautoescape %}

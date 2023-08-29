@@ -15,9 +15,11 @@ def cart(request):
     else:
         if 'device' in request.session:
             device = request.session['device']
-            customer = Customer.objects.get_or_create(customer=device)
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            items = order.orderitem_set.all()   
+        customer, created = Customer.objects.get_or_create(device=device)
+        order, created = Order.objects.get_or_create(
+                customer=customer, complete=False
+        )
+        items = order.orderitem_set.all()
     context = {
         "items": items, 
         "order": order
@@ -34,12 +36,17 @@ def update_item(request):
     try:
         customer = request.user.customer
     except:
-        request.session['device'] = str(uuid.uuid4())
-        device = request.session['device']
-        customer = Customer.objects.get_or_create(customer=device)
+        if not 'device' in request.session:
+            request.session['device'] = str(uuid.uuid4())
+
+    device = request.session.get('device')
+    customer, created = Customer.objects.get_or_create(device=device)
 
     product = Product.objects.get(id=productID)
-    order, created, = Order.objects.get_or_create(customer=customer, complete=False)
+    (
+        order,
+        created,
+    ) = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
     if action == "ajouter":
@@ -52,7 +59,7 @@ def update_item(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
 
-    if action == 'remove':
+    if action == "remove":
         orderItem.delete()
 
     return JsonResponse("Produit Ajoute", safe=False)
