@@ -8,7 +8,7 @@ urlpatterns = [
     path("", include("core.urls")),
     path("", include("store.urls")),
     path("compte/", include("authentication.urls")),
-    path("admin/", admin.site.urls),
+    path("keneya-admin-securePanel/", admin.site.urls),
 ]
 
 
