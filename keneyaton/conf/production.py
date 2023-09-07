@@ -48,11 +48,14 @@ if DEBUG:
 
 
 STATIC_URL = "https://services-keneyaton.com/%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
-#STORAGES = {"staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}}
+STORAGES = {
+        "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
+        "staticfiles": {"BACKEND": "storages.backends.s3boto3.S3StaticStorage"}
+        }
+
 
 MEDIA_URL = "/media/"
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 

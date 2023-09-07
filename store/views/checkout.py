@@ -64,7 +64,7 @@ def processOrder(request):
 
         try:
             envoie_reussie = False
-            keneyaton_admin_email = "admin@keneyaton.com"
+            keneyaton_admin_email = "support@services-keneyaton.com"
             # Envoie d'un email de confirmation de commande
             confirmation_subject = "Merci pour votre Commande !"
             customer_email = request.use.email

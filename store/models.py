@@ -74,7 +74,7 @@ class Product(models.Model):
     new_price = models.PositiveIntegerField(verbose_name="Prix actuel")
     slug = models.SlugField(blank=True)
     image = models.ImageField(
-        upload_to="products/images",
+        upload_to="images/products",
         height_field=None,
         width_field=None,
         max_length=None,
