@@ -13,7 +13,8 @@ urlpatterns = [
     # Panier
     path("mon-panier/", cart.cart, name="panier"),
     path("ajout-au-panier/", cart.update_item, name="ajout-au-panier"),
-    path("passer-a-la-caise/", checkout.checkout, name="checkout"),
+    path("boutique/passer-a-la-caisse/", checkout.checkout, name="checkout"),
+    path("boutique/payement/", checkout.processOrder, name="payement"),
     # Recherche
     path("resultat-recherche/", search.search, name="search"),
 ]

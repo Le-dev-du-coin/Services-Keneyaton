@@ -24,9 +24,9 @@ class Customer(models.Model):
 
     def __str__(self):
         if self.device:
-            name = self.device
+            name = f"{self.device}"
         else:
-            name = f"{self.user.last_name} {self.user.first_name}"
+            name = f"{self.user}"
         return name
 
 
@@ -229,7 +229,7 @@ class ShippingAddress(models.Model):
         ("Burkina Faso", "Burkina Faso"),
     ]
 
-    customer = models.OneToOneField(
+    customer = models.ForeignKey(
         Customer,
         on_delete=models.SET_NULL,
         null=True,

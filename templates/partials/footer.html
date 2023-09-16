@@ -43,8 +43,9 @@
             <h5 class="font-weight-bold text-dark mb-4">Categories</h5>
             <div class="d-flex flex-column justify-content-start">
               {% for categorie in links %}
-              <a class="text-dark mb-2" href="index.html"
-              ><i class="fa fa-angle-right mr-2"></i>{{categorie}}</a>
+              {% if forloop.counter <= 6 %}
+              <a class="text-dark mb-2" href="{{category.get_url}}"><i class="fa fa-angle-right mr-2"></i>{{categorie}}</a>
+              {% endif %}
               {% endfor %}
             </div>
           </div>

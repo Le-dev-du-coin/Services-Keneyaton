@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from store.models import Order, OrderItem, ShippingAddress
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.http import JsonResponse
+import json
 
 # Email importation
 from django.core.mail import EmailMessage
@@ -32,29 +34,30 @@ def checkout(request):
 # Process to payement
 @login_required(login_url="login")
 def processOrder(request):
-    data = json(request.body)
+    data = json.loads(request.body)
     print(data)
     transaction_id = datetime.now().timestamp()
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-        first_name = data["shippingformData"]["fist_name"]
+        first_name = data["shippingformData"]["first_name"]
         last_name = data["shippingformData"]["last_name"]
-        email = data["shippingformData"]["last_name"]
-        phone_number = data["shippingformData"]["last_name"]
-        country = data["shippingformData"]["last_name"]
-        city = data["shippingformData"]["last_name"]
-        street = data["shippingformData"]["last_name"]
-        door = data["shippingformData"]["last_name"]
-        door = data["shippingformData"]["last_name"]
-        compagnie = data["shippingformData"]["last_name"]
-        payement = data["shippingformData"]["last_name"]
+        email = data["shippingformData"]["email"]
+        phone_number = data["shippingformData"]["phone"]
+        country = data["shippingformData"]["country"]
+        city = data["shippingformData"]["city"]
+        street = data["shippingformData"]["street"]
+        door = data["shippingformData"]["door"]
+        compagnie = data["shippingformData"]["compagnie"]
+        payement = data["shippingformData"]["payement"]
 
         total = data["shippingformData"]["total"]
+        total = int(total)
         if total != order.get_cart_total:
+            response_data = {'error':  "Un probleme est survenu lors de la verification du montant total."}
             return JsonResponse(
-                "Un probleme est survenu lors de la verification du montant total.",
+               response_data,
                 status=404,
                 safe=False,
             )
@@ -67,7 +70,7 @@ def processOrder(request):
             keneyaton_admin_email = "support@services-keneyaton.com"
             # Envoie d'un email de confirmation de commande
             confirmation_subject = "Merci pour votre Commande !"
-            customer_email = request.use.email
+            customer_email = request.user.email
             confirmation_message = render_to_string(
                 "store/commande_confirmation.html",
                 {"order": order, "customer": request.user},
@@ -76,8 +79,10 @@ def processOrder(request):
                 confirmation_subject,
                 confirmation_message,
                 keneyaton_admin_email,
-                to=[customer_email],
+                #to=[customer_email],
+                to=['logic01pro@gmail.com']
             )
+            send_email.content_subtype = "html"
             send_email.send()
             print("Confirmation envoye")
 
@@ -90,36 +95,43 @@ def processOrder(request):
                 notification_subject,
                 notification_message,
                 keneyaton_admin_email,
-                to=[keneyaton_admin_email],
+                #to=[keneyaton_admin_email],
+                to=['logic01pro@gmail.com']
             )
+            send_notification.content_subtype = "html"
             send_notification.send()
             print("Notification envoye")
             envoie_reussie = True
         except Exception as e:
             print(f"Erreur lors de l'envoie de l'email: {str(e)}")
+            response_data = {"error": "Un probleme est survenu lors de l'envoie de l'email"}
             JsonResponse(
-                "Un probleme est survenu lors de l'envoie de l'email",
+                response_data,
                 status=404,
                 safe=False,
             )
 
+        shippingAddress = ShippingAddress.objects.create(
+                last_name=last_name,
+                first_name=first_name,
+                customer=request.user.customer,
+                order=order,
+                email=email,
+                phone_number=phone_number,
+                country=country,
+                city=city,
+                street=street,
+                door=door,
+                company_name=compagnie,
+            )
+
         if envoie_reussie:
             order.complete = True
+            order.save()
+            shippingAddress.save()
 
-        order.save()
+            
 
-        shippingAddress = ShippingAddress.objects.create(
-            last_name=last_name,
-            first_name=first_name,
-            customer=request.user,
-            order=order,
-            email=email,
-            phone_number=phone_number,
-            country=country,
-            city=city,
-            street=street,
-            door=door,
-            company_name=compagnie,
-        )
+        #order.save()
         print("Success")
     return JsonResponse("Payement effectue", safe=False)

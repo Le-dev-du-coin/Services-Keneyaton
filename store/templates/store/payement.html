@@ -23,7 +23,7 @@
 {% block content %}
      <!-- Checkout Start -->
      <div class="container-fluid pt-5">
-       <form id="shippingForm" method="post" action="">
+       <form id="formCheckout" method="post" action="">
         {% csrf_token %}
         <div class="row px-xl-5">
             <div class="col-lg-8">
@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
-                            <input class="form-control" type="text" placeholder="exemple@email.com" required>
+                            <input name="email" class="form-control" type="text" placeholder="exemple@email.com" required>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Mobile No</label>
@@ -140,5 +140,8 @@
        </form>
     </div>
     <!-- Checkout End -->
+    <script>
+        let total = "{{order.get_cart_total}}"
+    </script>
     <script src="{% static 'js/checkout.js' %}"></script>
 {% endblock  %}
