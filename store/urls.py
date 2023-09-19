@@ -1,5 +1,5 @@
 from django.urls import path
-from store.views import store, search, cart, checkout
+from store.views import store, search, cart, checkout, dashboard
 
 urlpatterns = [
     # Boutique
@@ -17,4 +17,7 @@ urlpatterns = [
     path("boutique/payement/", checkout.processOrder, name="payement"),
     # Recherche
     path("resultat-recherche/", search.search, name="search"),
+
+    # Dashboard
+    path("compte/tableau-de-bord/", dashboard.dashboard, name="dashboard"),
 ]

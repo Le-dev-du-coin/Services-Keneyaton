@@ -8,14 +8,13 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Panier</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Boutique</a></p>
+            <p class="m-0"><a href="{% url 'index' %}">Boutique</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Panier</p>
         </div>
     </div>
 </div>
 <!-- Page Header End -->
-
 {% endblock  %}
 
 {% block content %}
@@ -57,7 +56,7 @@
                             </div>
                         </td>
                         <td class="align-middle">{{item.get_total_en_cfa}}</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                        <td class="align-middle"><button data-product="{{item.product.id}}" data-action="remove" class="btn btn-sm btn-primary ajout-panier"><i class="fa fa-trash"></i></button></td>
                     </tr>
                     {% endfor %}
                 </tbody>

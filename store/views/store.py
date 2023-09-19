@@ -39,6 +39,6 @@ def store(request, category_slug=None):
 # Product Detail View
 def product_detail(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
-    related_products = Product.objects.filter(category=product).exclude()
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:6]
     context = {"product": product, "related_products": related_products}
     return render(request, "store/detail-produit.html", context)

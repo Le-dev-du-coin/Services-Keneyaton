@@ -1,0 +1,245 @@
+{% extends 'partials/base_2.html' %} {% load static %} {% block title %}
+Services Keneyaton - Tableau de bord{% endblock %} {% block header %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5" data-page-url="/panier/">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 300px"
+  >
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Tableau de bord</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="{% url 'index' %}">Accueil</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Tableau de bord</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+{% endblock %} {% block content %}
+<main class="main">
+  <div class="page-content">
+    <div class="dashboard">
+      <div class="container">
+        <div class="row">
+          <aside class="col-md-4 col-lg-3">
+            <ul
+              class="nav nav-dashboard flex-column mb-3 mb-md-0"
+              role="tablist"
+            >
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="tab-dashboard-link"
+                  data-toggle="tab"
+                  href="#tab-dashboard"
+                  role="tab"
+                  aria-controls="tab-dashboard"
+                  aria-selected="true"
+                  >Tableau de bord</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="tab-orders-link"
+                  data-toggle="tab"
+                  href="#tab-orders"
+                  role="tab"
+                  aria-controls="tab-orders"
+                  aria-selected="false"
+                  >Mes Âchats</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="tab-account-link"
+                  data-toggle="tab"
+                  href="#tab-account"
+                  role="tab"
+                  aria-controls="tab-account"
+                  aria-selected="false"
+                  >Details du compte</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Déconnexion</a>
+              </li>
+            </ul>
+          </aside>
+          <!-- End .col-lg-3 -->
+
+          <div class="col-md-8 col-lg-9">
+            <div class="tab-content">
+              <div
+                class="tab-pane fade show active"
+                id="tab-dashboard"
+                role="tabpanel"
+                aria-labelledby="tab-dashboard-link"
+              >
+                <p>
+                  Bienvenue
+                  <span class="font-weight-normal text-dark"
+                    >{{request.user.username}}</span
+                  >
+                  (vous n'êtes pas
+                  <span class="font-weight-normal text-dark"
+                    >{{request.user.username}}</span
+                  >
+                  ? <a href="#">Déconnexion</a>)
+                  <br />
+                  Vous pourrez voir vos
+                  <a href="#tab-orders" class="tab-trigger-link link-underline"
+                    >récents âchats</a
+                  >, parametrer vos
+                  <a href="#tab-address" class="tab-trigger-link"
+                    >adresses de payement, de livraison</a
+                  >, et
+                  <a href="#tab-account" class="tab-trigger-link"
+                    >changer les details de votre compte</a
+                  >.
+                </p>
+              </div>
+              <!-- .End .tab-pane -->
+
+              {% if not my_order %}
+              <div
+                class="tab-pane fade"
+                id="tab-orders"
+                role="tabpanel"
+                aria-labelledby="tab-orders-link"
+              >
+                <p>Vous n'avez encore pas fait d'achat.</p>
+                <a href="{% url 'boutique' %}" class="btn btn-outline-primary-2"
+                  ><span>Aller à la Boutique </span
+                  ><i class="icon-long-arrow-right"></i
+                ></a>
+              </div>
+              <!-- .End .tab-pane -->
+              {% else %}
+              <div
+                class="tab-pane fade"
+                id="tab-orders"
+                role="tabpanel"
+                aria-labelledby="tab-orders-link"
+              >
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ID de transaction</th>
+                    <th scope="col">Date de la commande</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">Methode de Paiement</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in my_order %}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{order.transaction_id}}</td>
+                    <td>{{order.date_ordered |date}}</td>
+                    <td>{{order.get_cart_total_en_cfa}}</td>
+                    <td>{{order.payment_method}}</td>
+                      {%if order.status == "Nouvelle"%}
+                      <td class="table-info">Pas encore vu</td>
+                      {% elif order.status == "Valider" %}
+                      <td class="table-warning">En traitement...</td>
+                      {% elif order.status == "Complete" %}
+                     <td class="table-success">Terminer</td>
+                      {% else %}
+                      <td class="table-danger">Annuler</td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
+              <!-- .End .tab-pane -->
+              {% endif %}
+
+              <div
+                class="tab-pane fade"
+                id="tab-account"
+                role="tabpanel"
+                aria-labelledby="tab-account-link"
+              >
+                <form action="#">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label>Prénom </label>
+                      <input
+                        value="{{request.user.first_name }}"
+                        type="text"
+                        class="form-control"
+                        readonly
+                      />
+                    </div>
+                    <!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                      <label>Nom </label>
+                      <input
+                        value="{{request.user.last_name |upper}}"
+                        type="text"
+                        class="form-control"
+                        readonly
+                      />
+                    </div>
+                    <!-- End .col-sm-6 -->
+                  </div>
+                  <!-- End .row -->
+
+                  <label>Nom d'utilisateur *</label>
+                  <input
+                    value="{{request.user.username}}"
+                    type="text"
+                    class="form-control"
+                    readonly
+                  />
+
+                  <label>Adresse email</label>
+                  <input
+                    value="{{request.user.email}}"
+                    type="email"
+                    class="form-control"
+                    readonly
+                  />
+
+                  <label
+                    >Mot de passe actuel (laisser vite pour ne rien
+                    changer)</label
+                  >
+                  <input type="password" class="form-control" />
+
+                  <label
+                    >Nouveau mot de passe (laisser vite pour ne rien
+                    changer)</label
+                  >
+                  <input type="password" class="form-control" />
+
+                  <label>Confirmer nouveau mot de passe</label>
+                  <input type="password" class="form-control mb-2" />
+
+                  <button type="submit" class="btn btn-outline-primary">
+                    <span>CHANGER MOT DE PASSE</span>
+                    <i class="icon-long-arrow-right"></i>
+                  </button>
+                </form>
+              </div>
+              <!-- .End .tab-pane -->
+            </div>
+          </div>
+          <!-- End .col-lg-9 -->
+        </div>
+        <!-- End .row -->
+      </div>
+      <!-- End .container -->
+    </div>
+    <!-- End .dashboard -->
+  </div>
+  <!-- End .page-content -->
+</main>
+<!-- End .main -->
+{% endblock %}

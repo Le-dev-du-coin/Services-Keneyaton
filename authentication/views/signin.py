@@ -44,8 +44,7 @@ def signin(request):
                         # Verifier si le produit dans le panier est superieur a un 
                         if customer_order.orderitem_set.all().count() >= 1:
                             return redirect('panier')
-                    else:
-                        return redirect('index')
+                    return redirect('index')
             else:
                 messages.error(request, "Email ou mot de passe incorrect !")
     return render(request, "authentication/login.html")
