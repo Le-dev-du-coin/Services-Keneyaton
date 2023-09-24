@@ -6,7 +6,7 @@ from django.contrib import messages
 
 def home(request):
     categories = Category.objects.order_by("name")[:6]
-    popular_products = Product.objects.filter(is_popular=True).order_by("-create_at")[:30]
+    popular_products = Product.objects.filter(is_popular=True).order_by("-create_at")[:20]
     new_arrivage = Product.objects.filter(is_new_arrivage=True).order_by('-create_at')[:20]
 
     context = {
@@ -27,7 +27,7 @@ def contact(request):
         subject_formatted = f"Vous avez recu un nouveau message de la part de {full_name} depuis votre site"
         try:
             send_email = EmailMessage(
-                subject_formatted, message, email, to=["logic01pro@gmail.com"]
+                subject_formatted, message, email, to=["contact@services-keneyaton.com"]
             )
             send_email.send()
             messages.success(

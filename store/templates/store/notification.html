@@ -4,9 +4,9 @@
 
 <h2>Informations sur la commande :</h2>
 <ul>
-    <li><strong>Numéro de commande :</strong> {{ order.transaction_id }}</li>
+    <li><strong>Numéro de commande :</strong> {{ transaction_id }}</li>
     <li><strong>Date de la commande :</strong> {{ order.date_ordered }}</li>
-    <li><strong>Client :</strong> {{ customer.username }}</li>
+    <li><strong>Client :</strong> {{ customer.first_name }} {{customer.last_name}}</li>
     <!-- Ajoutez ici d'autres informations sur la commande que vous souhaitez inclure -->
 </ul>
 

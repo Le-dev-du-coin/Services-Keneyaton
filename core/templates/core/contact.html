@@ -29,6 +29,7 @@
         <div class="row px-xl-5">
             <div class="col-lg-7 mb-5">
                 <div class="contact-form">
+                   {% include 'partials/alert.html' %}
                     <div id="success"></div>
                     <form method="post" name="sentMessage" id="contactForm" novalidate="novalidate">
                         {% csrf_token %}
