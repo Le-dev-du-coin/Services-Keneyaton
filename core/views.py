@@ -27,7 +27,7 @@ def contact(request):
         subject_formatted = f"Vous avez recu un nouveau message de la part de {full_name} depuis votre site"
         try:
             send_email = EmailMessage(
-                subject_formatted, message, email, to=["contact@services-keneyaton.com"]
+                subject_formatted, message, email, to=["dembasylla779@gmail.com"]
             )
             send_email.send()
             messages.success(
