@@ -9,7 +9,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Database
@@ -31,9 +31,9 @@ DATABASES = {
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 
@@ -47,7 +47,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECURE_HSTS_SECONDS = 31536000  # 1 an
 SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_SSL_REDIRECT=True   #https redirect
+#SECURE_SSL_REDIRECT=True   #https redirect
 SESSION_COOKIE_SECURE = True    #session cookie secure
 CSRF_COOKIE_SECURE = True      #csrfcookie secure
 #X_FRAME_OPTIONS='SAMEORIGIN'#xframe options sameorigin
